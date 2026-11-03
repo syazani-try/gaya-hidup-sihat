@@ -1,0 +1,1419 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CHIBI PIXEL RPG: MISI DETEKTIF GAYA HIDUP</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Pixel & Kawaii Style -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&family=Fredoka+One&display=swap" rel="stylesheet">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        pastelPink: '#FFD1DC',
+                        pastelBlue: '#AEC6CF',
+                        pastelLavender: '#E6E6FA',
+                        pastelMint: '#B2FBA5',
+                        pastelYellow: '#FDFD96',
+                        pastelPeach: '#FFDAB9',
+                        pixelDark: '#2E2B44',
+                        pixelCard: '#FFF8F0',
+                    },
+                    fontFamily: {
+                        pixel: ['"Press Start 2P"', 'cursive'],
+                        retro: ['"VT323"', 'monospace'],
+                        kawaii: ['"Fredoka One"', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    
+    <style>
+        /* Pixel Art Styling Setup */
+        * {
+            image-rendering: pixelated;
+            user-select: none;
+        }
+
+        body {
+            background-color: #2b273d;
+            background-image: 
+                radial-gradient(#403a5c 15%, transparent 16%),
+                radial-gradient(#403a5c 15%, transparent 16%);
+            background-size: 30px 30px;
+            background-position: 0 0, 15px 15px;
+            font-family: 'VT323', monospace;
+            overflow-x: hidden;
+            color: #2E2B44;
+        }
+
+        /* Pixel Borders & Cards */
+        .pixel-box {
+            background: #FFF8F0;
+            border: 4px solid #2E2B44;
+            box-shadow: 6px 6px 0px #2E2B44;
+            position: relative;
+        }
+
+        .pixel-box-pink {
+            background: #FFEDF3;
+            border: 4px solid #2E2B44;
+            box-shadow: 6px 6px 0px #FF94B9;
+        }
+
+        .pixel-box-blue {
+            background: #EBF7FF;
+            border: 4px solid #2E2B44;
+            box-shadow: 6px 6px 0px #70B4E8;
+        }
+
+        .pixel-box-dark {
+            background: #1e1b2e;
+            border: 4px solid #FFD1DC;
+            box-shadow: 6px 6px 0px #000;
+            color: #FFF;
+        }
+
+        .pixel-btn {
+            position: relative;
+            display: inline-block;
+            background: #FFD1DC;
+            border: 4px solid #2E2B44;
+            box-shadow: 0 6px 0 #2E2B44, 0 10px 0 rgba(0,0,0,0.2);
+            color: #2E2B44;
+            font-family: 'Press Start 2P', cursive;
+            font-size: 11px;
+            padding: 10px 16px;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            text-align: center;
+        }
+
+        .pixel-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #2E2B44, 0 6px 0 rgba(0,0,0,0.2);
+            background: #FFE4E9;
+        }
+
+        .pixel-btn:active {
+            transform: translateY(6px);
+            box-shadow: 0 0px 0 #2E2B44, 0 2px 0 rgba(0,0,0,0.2);
+        }
+
+        .pixel-btn-mint {
+            background: #B2FBA5;
+            box-shadow: 0 6px 0 #2E2B44;
+        }
+        .pixel-btn-mint:hover { background: #C8FEC0; }
+
+        .pixel-btn-blue {
+            background: #AEC6CF;
+            box-shadow: 0 6px 0 #2E2B44;
+        }
+        .pixel-btn-blue:hover { background: #CBE3ED; }
+
+        .pixel-btn-yellow {
+            background: #FDFD96;
+            box-shadow: 0 6px 0 #2E2B44;
+        }
+        .pixel-btn-yellow:hover { background: #FFFFB5; }
+
+        .pixel-btn-pink {
+            background: #FFD1DC;
+            box-shadow: 0 6px 0 #2E2B44;
+        }
+
+        /* Chibi Animation Idle States */
+        @keyframes floatIdle {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+
+        @keyframes cloudScroll {
+            0% { transform: translateX(100vw); }
+            100% { transform: translateX(-200px); }
+        }
+
+        @keyframes pulseRec {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        .animate-idle {
+            animation: floatIdle 3s ease-in-out infinite;
+        }
+
+        .cloud-bg {
+            position: absolute;
+            animation: cloudScroll 35s linear infinite;
+            opacity: 0.8;
+            pointer-events: none;
+        }
+
+        .rec-dot {
+            animation: pulseRec 1s infinite;
+        }
+
+        /* RPG Dialogue Box Box Styling */
+        .dialogue-box {
+            background: #1d1829;
+            border: 4px solid #FFDAB9;
+            box-shadow: 6px 6px 0 #000;
+            color: #FFF;
+            min-height: 130px;
+        }
+
+        /* Progress Bar Pixel */
+        .pixel-progress-bg {
+            background: #3a3452;
+            border: 3px solid #2E2B44;
+            height: 24px;
+            border-radius: 4px;
+            padding: 2px;
+        }
+        .pixel-progress-fill {
+            background: linear-gradient(90deg, #B2FBA5, #70B4E8);
+            height: 100%;
+            transition: width 0.5s ease-in-out;
+            border-radius: 2px;
+        }
+
+        /* Wheel CSS */
+        #wheelCanvas {
+            transition: transform 4s cubic-bezier(0.15, 0.99, 0.18, 1);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #2E2B44;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #FFD1DC;
+            border: 2px solid #2E2B44;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col justify-between items-center relative p-2 sm:p-4">
+
+    <!-- Floating Background Pixel Clouds & Stars -->
+    <div class="fixed inset-0 overflow-hidden pointer-events-none z-0">
+        <svg class="cloud-bg top-6" style="animation-duration: 45s;" width="90" height="40" viewBox="0 0 90 40" fill="none">
+            <path d="M20 20H10V30H20V20ZM20 10H40V20H20V10ZM40 10H60V20H40V10ZM60 20H80V30H60V20ZM10 30H80V40H10V30Z" fill="#FFF8F0" opacity="0.6"/>
+        </svg>
+        <svg class="cloud-bg top-32" style="animation-duration: 30s; animation-delay: -15s;" width="120" height="50" viewBox="0 0 120 50" fill="none">
+            <path d="M20 20H10V30H20V20ZM20 10H50V20H20V10ZM50 10H90V20H50V10ZM90 20H110V30H90V20ZM10 30H110V40H10V30Z" fill="#E6E6FA" opacity="0.5"/>
+        </svg>
+    </div>
+
+    <!-- MAIN GAME HEADER / HUD CONTAINER -->
+    <header class="w-full max-w-4xl z-10 mb-4">
+        <div class="pixel-box bg-pastelLavender p-3 sm:p-4 flex flex-col md:flex-row justify-between items-center gap-3">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 bg-pastelPink border-2 border-pixelDark flex items-center justify-center font-pixel text-lg text-pixelDark shadow-sm">
+                    🔍
+                </div>
+                <div>
+                    <h1 class="font-pixel text-xs sm:text-sm md:text-base text-pixelDark tracking-wide">MISI DETEKTIF GAYA HIDUP</h1>
+                    <p class="font-retro text-lg text-gray-700 leading-none">"Perhatikan, Fikirkan dan Bandingkan!" • Cute Chibi Pixel RPG</p>
+                </div>
+            </div>
+
+            <!-- RPG Level Progress Tracker -->
+            <div class="w-full md:w-64 flex flex-col gap-1">
+                <div class="flex justify-between font-pixel text-[10px] text-pixelDark">
+                    <span id="levelIndicator">TAHAP 01/06</span>
+                    <span id="scoreDisplay">MARKAH: 0</span>
+                </div>
+                <div class="pixel-progress-bg">
+                    <div id="progressBar" class="pixel-progress-fill" style="width: 16%;"></div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN RPG SCREEN VIEWPORT -->
+    <main class="w-full max-w-4xl flex-grow z-10 flex flex-col justify-center">
+
+        <!-- ========================================== -->
+        <!-- SCREEN 1: TITLE SCREEN (MENU UTAMA)       -->
+        <!-- ========================================== -->
+        <section id="screen-title" class="pixel-box p-6 sm:p-8 text-center flex flex-col items-center justify-center min-h-[500px] bg-gradient-to-b from-pastelPink via-white to-pastelBlue">
+            <div class="inline-block bg-pastelYellow border-4 border-pixelDark px-4 py-1 mb-2 font-pixel text-xs text-pixelDark shadow-md">
+                ★ 2 PEMAIN • AKTIVITI BERKUMPULAN ★
+            </div>
+            
+            <h1 class="font-pixel text-xl sm:text-3xl md:text-4xl text-pixelDark mb-1 leading-relaxed tracking-wider drop-shadow-md">
+                MISI DETEKTIF GAYA HIDUP
+            </h1>
+            <h2 class="font-kawaii text-lg sm:text-xl text-pink-600 mb-4 tracking-wide">
+                "Perhatikan, Fikirkan dan Bandingkan!"
+            </h2>
+
+            <!-- Dual Chibi Visual Display -->
+            <div class="flex justify-center items-end gap-6 sm:gap-12 my-2 relative">
+                <!-- Chibi Doctor -->
+                <div class="flex flex-col items-center animate-idle">
+                    <div class="w-24 h-28 sm:w-28 sm:h-32 relative">
+                        <!-- SVG Doctor Chibi -->
+                        <svg viewBox="0 0 100 120" class="w-full h-full">
+                            <rect x="25" y="15" width="50" height="40" fill="#4A2E16" rx="10"/>
+                            <rect x="20" y="25" width="60" height="30" fill="#4A2E16" rx="5"/>
+                            <rect x="30" y="20" width="40" height="40" fill="#FFE0BD" rx="8"/>
+                            <ellipse cx="42" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <ellipse cx="58" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <circle cx="43" cy="36" r="1.5" fill="#FFF"/>
+                            <circle cx="59" cy="36" r="1.5" fill="#FFF"/>
+                            <ellipse cx="37" cy="45" rx="4" ry="2" fill="#FF8A8A"/>
+                            <ellipse cx="63" cy="45" rx="4" ry="2" fill="#FF8A8A"/>
+                            <path d="M46 47 Q50 51 54 47" stroke="#2E2B44" stroke-width="2" fill="none"/>
+                            <rect x="28" y="58" width="44" height="42" fill="#FFFFFF" rx="4"/>
+                            <rect x="28" y="58" width="44" height="42" stroke="#2E2B44" stroke-width="3" fill="none"/>
+                            <rect x="42" y="58" width="16" height="20" fill="#70B4E8"/>
+                            <path d="M36 60 Q34 78 50 80 Q66 78 64 60" stroke="#FF5555" stroke-width="3" fill="none"/>
+                            <circle cx="50" cy="80" r="4" fill="#FDFD96" stroke="#2E2B44" stroke-width="1.5"/>
+                            <rect x="18" y="62" width="12" height="25" fill="#FFFFFF" stroke="#2E2B44" stroke-width="2" rx="3"/>
+                            <rect x="70" y="62" width="12" height="25" fill="#FFFFFF" stroke="#2E2B44" stroke-width="2" rx="3"/>
+                            <rect x="70" y="68" width="16" height="20" fill="#C49A45" stroke="#2E2B44" stroke-width="2"/>
+                            <rect x="73" y="72" width="10" height="13" fill="#FFF"/>
+                            <rect x="35" y="98" width="12" height="15" fill="#2E2B44"/>
+                            <rect x="53" y="98" width="12" height="15" fill="#2E2B44"/>
+                        </svg>
+                    </div>
+                    <span class="font-pixel text-[9px] bg-pastelBlue px-2 py-1 border-2 border-pixelDark mt-1">DOKTOR CHIBI</span>
+                </div>
+
+                <div class="font-pixel text-lg text-pink-500 mb-6 animate-bounce">VS</div>
+
+                <!-- Chibi Reporter -->
+                <div class="flex flex-col items-center animate-idle" style="animation-delay: -1.5s;">
+                    <div class="w-24 h-28 sm:w-28 sm:h-32 relative">
+                        <!-- SVG Reporter Chibi -->
+                        <svg viewBox="0 0 100 120" class="w-full h-full">
+                            <rect x="22" y="12" width="56" height="42" fill="#D97706" rx="12"/>
+                            <rect x="30" y="20" width="40" height="40" fill="#FFE0BD" rx="8"/>
+                            <rect x="25" y="10" width="50" height="12" fill="#EF4444" rx="2"/>
+                            <text x="36" y="18" font-family="sans-serif" font-size="7" font-weight="bold" fill="#FFF">PRESS</text>
+                            <ellipse cx="42" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <ellipse cx="58" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <circle cx="43" cy="36" r="1.5" fill="#FFF"/>
+                            <circle cx="59" cy="36" r="1.5" fill="#FFF"/>
+                            <ellipse cx="36" cy="45" rx="4" ry="2" fill="#FF8A8A"/>
+                            <ellipse cx="64" cy="45" rx="4" ry="2" fill="#FF8A8A"/>
+                            <ellipse cx="50" cy="48" rx="3" ry="2" fill="#2E2B44"/>
+                            <rect x="28" y="58" width="44" height="42" fill="#F59E0B" rx="4"/>
+                            <rect x="28" y="58" width="44" height="42" stroke="#2E2B44" stroke-width="3" fill="none"/>
+                            <rect x="42" y="58" width="16" height="42" fill="#FFFFFF"/>
+                            <rect x="14" y="60" width="12" height="22" fill="#6B7280" stroke="#2E2B44" stroke-width="2"/>
+                            <circle cx="20" cy="56" r="7" fill="#EF4444" stroke="#2E2B44" stroke-width="2"/>
+                            <rect x="35" y="98" width="12" height="15" fill="#7C2D12"/>
+                            <rect x="53" y="98" width="12" height="15" fill="#7C2D12"/>
+                        </svg>
+                    </div>
+                    <span class="font-pixel text-[9px] bg-pastelPeach px-2 py-1 border-2 border-pixelDark mt-1">WARTAWAN CHIBI</span>
+                </div>
+            </div>
+
+            <!-- Welcome Message Briefing -->
+            <div class="pixel-box bg-white p-4 max-w-xl my-4 text-left border-2">
+                <p class="font-retro text-xl sm:text-2xl text-gray-800 leading-snug">
+                    👋 <strong>Selamat datang ke Misi Detektif Gaya Hidup!</strong> Kamu dan rakan kamu akan menjalankan satu penyiasatan berdasarkan dua gambar. Kamu perlu mengenal pasti maklumat tersurat dan tersirat serta membuat perbandingan antara kedua-duanya. Bersedia untuk menjadi doktor dan wartawan?
+                </p>
+            </div>
+
+            <button onclick="startGame()" class="pixel-btn pixel-btn-mint text-xs sm:text-sm px-8 py-3">
+                ▶ MULA MISI SEKARANG
+            </button>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 2: PEMILIHAN KARAKTER (SPIN WHEEL)  -->
+        <!-- ========================================== -->
+        <section id="screen-wheel" class="pixel-box p-6 hidden text-center bg-pastelPink/30 flex flex-col items-center">
+            <div class="bg-pixelDark text-white font-pixel text-xs px-3 py-1 mb-2 inline-block">TAHAP 01</div>
+            <h2 class="font-pixel text-base sm:text-xl text-pixelDark mb-1">RODA PEMILIHAN KARAKTER</h2>
+            <p class="font-retro text-xl text-gray-700 mb-4">Pemain 1 menekan butang PUTAR untuk menentukan peranannya secara rawak!</p>
+
+            <div class="relative my-2">
+                <!-- Pointer -->
+                <div class="absolute -top-5 left-1/2 -translate-x-1/2 z-20 w-0 h-0 border-l-[15px] border-l-transparent border-r-[15px] border-r-transparent border-t-[25px] border-t-red-500 filter drop-shadow"></div>
+                
+                <!-- Wheel Canvas -->
+                <canvas id="wheelCanvas" width="260" height="260" class="rounded-full border-8 border-pixelDark shadow-2xl bg-white"></canvas>
+            </div>
+
+            <button id="spinBtn" onclick="spinWheel()" class="pixel-btn pixel-btn-yellow text-xs sm:text-sm my-3">
+                🎰 PUTAR RODA!
+            </button>
+
+            <!-- Result Announcement Card -->
+            <div id="wheelResult" class="hidden w-full max-w-md pixel-box bg-white p-4 mt-2 animate-bounce">
+                <h3 class="font-pixel text-xs text-pink-600 mb-2">TAHNAIH! PERANAN ANDA IALAH:</h3>
+                <div id="resultText" class="font-kawaii text-lg sm:text-xl text-pixelDark"></div>
+                <button onclick="nextLevel(2)" class="pixel-btn pixel-btn-mint mt-3 text-xs">
+                    LIHAT MISI SAYA ▶
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 3: KETAHUI KARAKTER ANDA           -->
+        <!-- ========================================== -->
+        <section id="screen-roles" class="pixel-box p-6 hidden bg-white">
+            <div class="bg-pixelDark text-white font-pixel text-xs px-3 py-1 mb-2 inline-block">TAHAP 02</div>
+            <h2 class="font-pixel text-base sm:text-xl text-pixelDark text-center mb-4">TUGASAN KEDUA-DUA KARAKTER</h2>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <!-- Doctor Role Card -->
+                <div id="roleCardDoctor" class="pixel-box p-4 bg-pastelBlue/30 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-3xl">🩺</span>
+                            <div>
+                                <h3 class="font-pixel text-xs text-blue-900">PERANAN A: DOKTOR</h3>
+                                <span id="p1DoctorTag" class="font-retro text-lg text-blue-700 font-bold">(PEMAIN 1)</span>
+                            </div>
+                        </div>
+                        <ul class="font-retro text-lg space-y-1.5 text-gray-800 list-disc list-inside">
+                            <li>Memerhatikan aktiviti individu dalam kedua-dua gambar.</li>
+                            <li>Menjelaskan kemungkinan sebab seseorang melakukan aktiviti.</li>
+                            <li>Membuat inferens tentang gaya hidup yang ditunjukkan.</li>
+                            <li>Memberikan pandangan amalan gaya hidup sihat.</li>
+                            <li>Menjawab soalan daripada Wartawan.</li>
+                            <li>Membandingkan kedua-dua situasi (Tersurat & Tersirat).</li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Reporter Role Card -->
+                <div id="roleCardReporter" class="pixel-box p-4 bg-pastelPink/30 flex flex-col justify-between">
+                    <div>
+                        <div class="flex items-center gap-3 mb-2">
+                            <span class="text-3xl">🎤</span>
+                            <div>
+                                <h3 class="font-pixel text-xs text-pink-900">PERANAN B: WARTAWAN</h3>
+                                <span id="p2ReporterTag" class="font-retro text-lg text-pink-700 font-bold">(PEMAIN 2)</span>
+                            </div>
+                        </div>
+                        <ul class="font-retro text-lg space-y-1.5 text-gray-800 list-disc list-inside">
+                            <li>Memerhatikan kedua-dua gambar dengan teliti.</li>
+                            <li>Melaporkan perkara yang dapat dilihat secara jelas (Tersurat).</li>
+                            <li>Mengemukakan soalan penyiasatan kepada Doktor.</li>
+                            <li>Meminta penjelasan tentang maklumat tersirat.</li>
+                            <li>Memberikan respons terhadap jawapan Doktor.</li>
+                            <li>Membuat rumusan perbezaan kedua-dua situasi.</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <button onclick="nextLevel(3)" class="pixel-btn pixel-btn-mint text-xs sm:text-sm">
+                    MULAKAN PENYIASATAN DUA GAMBAR ▶
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 4: MENYIASAT GAMBAR (2 ORIGINAL IMAGES) -->
+        <!-- ========================================== -->
+        <section id="screen-investigate" class="pixel-box p-4 sm:p-6 hidden bg-pastelLavender/30">
+            <div class="flex justify-between items-center mb-2">
+                <div class="bg-pixelDark text-white font-pixel text-xs px-3 py-1">TAHAP 03</div>
+                <span class="font-pixel text-xs text-pink-600">STESEN BUKTI DETEKTIF</span>
+            </div>
+
+            <h2 class="font-pixel text-sm sm:text-lg text-pixelDark text-center mb-2">PENYIASATAN GAMBAR: TERSURAT VS TERSIRAT</h2>
+            <p class="font-retro text-lg text-gray-700 text-center mb-4">"Perhatikan kedua-dua gambar. Kenal pasti perkara yang dapat dilihat dan fikirkan maksud di sebalik tindakan yang dilakukan."</p>
+
+            <!-- Image Switching Controls -->
+            <div class="flex justify-center gap-2 mb-4 flex-wrap">
+                <button id="btnImgA" onclick="switchImageView('A')" class="pixel-btn pixel-btn-blue text-[10px]">
+                    🖼️ VIEW IMAGE A
+                </button>
+                <button id="btnImgB" onclick="switchImageView('B')" class="pixel-btn pixel-btn-pink text-[10px]">
+                    🖼️ VIEW IMAGE B
+                </button>
+                <button id="btnImgBoth" onclick="switchImageView('BOTH')" class="pixel-btn pixel-btn-yellow text-[10px]">
+                    🔍 COMPARE BOTH IMAGES
+                </button>
+            </div>
+
+            <!-- Main Display Frame for Original Images -->
+            <div id="singleImageContainer" class="pixel-box bg-white p-3 mb-4 flex flex-col items-center">
+                <div id="imageALayout" class="w-full flex flex-col items-center">
+                    <div class="font-pixel text-xs text-blue-800 mb-2">GAMBAR A: AKTIVITI DI TAMAN REKREASI</div>
+                    <div class="w-full max-h-80 border-4 border-pixelDark overflow-hidden rounded shadow bg-sky-200 flex items-center justify-center p-2">
+                        <!-- SVG Pixel Scene for GAMBAR A (Park & Recreation) -->
+                        <svg viewBox="0 0 400 220" class="w-full h-full max-h-72 object-contain">
+                            <!-- Sky & Sun -->
+                            <rect width="400" height="140" fill="#BAE6FD"/>
+                            <circle cx="340" cy="40" r="22" fill="#FDE047"/>
+                            <!-- Pixel Clouds -->
+                            <rect x="40" y="25" width="50" height="15" fill="#FFFFFF" rx="4"/>
+                            <rect x="180" y="35" width="60" height="18" fill="#FFFFFF" rx="4"/>
+                            <!-- Trees & Hills -->
+                            <ellipse cx="60" cy="120" rx="35" ry="40" fill="#22C55E"/>
+                            <rect x="55" y="140" width="10" height="20" fill="#78350F"/>
+                            <ellipse cx="340" cy="115" rx="40" ry="45" fill="#16A34A"/>
+                            <rect x="335" y="140" width="10" height="20" fill="#78350F"/>
+                            <!-- Grass Ground -->
+                            <rect y="135" width="400" height="85" fill="#4ADE80"/>
+                            <!-- Jogging Track Path -->
+                            <path d="M0 180 Q 200 150 400 190" stroke="#FDBA74" stroke-width="24" fill="none"/>
+                            <!-- Playground Slide -->
+                            <path d="M70 120 L95 165" stroke="#EF4444" stroke-width="8" stroke-linecap="round"/>
+                            <rect x="65" y="120" width="10" height="45" fill="#64748B"/>
+                            <!-- Chibi Joggers & Playground Figures -->
+                            <!-- Figure 1: Jogger Pink -->
+                            <circle cx="160" cy="155" r="8" fill="#FCA5A5"/>
+                            <rect x="154" y="163" width="12" height="14" fill="#EC4899" rx="2"/>
+                            <rect x="155" y="177" width="4" height="10" fill="#1E293B"/>
+                            <rect x="161" y="177" width="4" height="10" fill="#1E293B"/>
+                            <!-- Figure 2: Jogger Blue -->
+                            <circle cx="190" cy="150" r="8" fill="#FED7AA"/>
+                            <rect x="184" y="158" width="12" height="14" fill="#3B82F6" rx="2"/>
+                            <rect x="185" y="172" width="4" height="10" fill="#1E293B"/>
+                            <rect x="191" y="172" width="4" height="10" fill="#1E293B"/>
+                            <!-- Kids Playing -->
+                            <circle cx="100" cy="160" r="6" fill="#FDE047"/>
+                            <rect x="96" y="166" width="8" height="10" fill="#8B5CF6"/>
+                            <!-- Text Label In Scene -->
+                            <rect x="10" y="10" width="180" height="22" fill="#2E2B44" rx="4"/>
+                            <text x="18" y="25" font-family="'Press Start 2P', monospace" font-size="9" fill="#B2FBA5">🌳 TAMAN REKREASI</text>
+                        </svg>
+                    </div>
+                    <p class="font-retro text-lg text-gray-700 mt-2 text-center">Situasi 1: Aktiviti kemasyarakatan, senaman dan riadah di kawasan taman rekreasi.</p>
+                </div>
+
+                <div id="imageBLayout" class="w-full flex flex-col items-center hidden">
+                    <div class="font-pixel text-xs text-pink-800 mb-2">GAMBAR B: AKTIVITI DI RUMAH</div>
+                    <div class="w-full max-h-80 border-4 border-pixelDark overflow-hidden rounded shadow bg-amber-100 flex items-center justify-center p-2">
+                        <!-- SVG Pixel Scene for GAMBAR B (Living Room Couch & Smartphone) -->
+                        <svg viewBox="0 0 400 220" class="w-full h-full max-h-72 object-contain">
+                            <!-- Living Room Wall & Window -->
+                            <rect width="400" height="160" fill="#FEF3C7"/>
+                            <rect x="30" y="20" width="70" height="60" fill="#BAE6FD" stroke="#78350F" stroke-width="4"/>
+                            <line x1="65" y1="20" x2="65" y2="80" stroke="#78350F" stroke-width="3"/>
+                            <line x1="30" y1="50" x2="100" y2="50" stroke="#78350F" stroke-width="3"/>
+                            <!-- Floor -->
+                            <rect y="150" width="400" height="70" fill="#D97706"/>
+                            <!-- Sofa Couch -->
+                            <rect x="100" y="100" width="200" height="70" fill="#DC2626" rx="10" stroke="#2E2B44" stroke-width="3"/>
+                            <rect x="85" y="90" width="25" height="70" fill="#B91C1C" rx="5" stroke="#2E2B44" stroke-width="3"/>
+                            <rect x="290" y="90" width="25" height="70" fill="#B91C1C" rx="5" stroke="#2E2B44" stroke-width="3"/>
+                            <!-- Man Lying on Sofa -->
+                            <!-- Head -->
+                            <circle cx="140" cy="115" r="14" fill="#FED7AA" stroke="#2E2B44" stroke-width="2"/>
+                            <!-- Body/Belly on couch -->
+                            <ellipse cx="190" cy="125" rx="35" ry="18" fill="#9CA3AF" stroke="#2E2B44" stroke-width="2"/>
+                            <!-- Smartphone held in hands -->
+                            <rect x="175" y="105" width="14" height="22" fill="#1E293B" stroke="#FFF" stroke-width="1.5" rx="2"/>
+                            <rect x="177" y="107" width="10" height="15" fill="#38BDF8"/>
+                            <!-- Table in Front -->
+                            <rect x="220" y="145" width="110" height="35" fill="#78350F" stroke="#2E2B44" stroke-width="3" rx="3"/>
+                            <!-- Snack Can & Biscuits on Table -->
+                            <rect x="240" y="130" width="12" height="18" fill="#EF4444" stroke="#2E2B44" stroke-width="1.5" rx="2"/>
+                            <circle cx="270" cy="138" r="5" fill="#F59E0B" stroke="#78350F" stroke-width="1"/>
+                            <circle cx="282" cy="140" r="5" fill="#F59E0B" stroke="#78350F" stroke-width="1"/>
+                            <!-- Text Label In Scene -->
+                            <rect x="10" y="10" width="170" height="22" fill="#2E2B44" rx="4"/>
+                            <text x="18" y="25" font-family="'Press Start 2P', monospace" font-size="9" fill="#FFD1DC">🏠 AKTIVITI DI RUMAH</text>
+                        </svg>
+                    </div>
+                    <p class="font-retro text-lg text-gray-700 mt-2 text-center">Situasi 2: Seorang lelaki berehat di sofa sambil menggunakan telefon berserta makanan ringan di atas meja.</p>
+                </div>
+            </div>
+
+            <!-- Side-By-Side Comparison Grid (When COMPARE BOTH is clicked) -->
+            <div id="compareBothContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hidden">
+                <div class="pixel-box bg-white p-2 text-center">
+                    <div class="font-pixel text-[10px] text-blue-800 mb-1">GAMBAR A: TAMAN REKREASI</div>
+                    <div class="w-full h-44 bg-sky-200 border-2 border-pixelDark rounded flex items-center justify-center p-1">
+                        <svg viewBox="0 0 400 220" class="w-full h-full object-contain">
+                            <rect width="400" height="140" fill="#BAE6FD"/>
+                            <circle cx="340" cy="40" r="22" fill="#FDE047"/>
+                            <rect y="135" width="400" height="85" fill="#4ADE80"/>
+                            <path d="M0 180 Q 200 150 400 190" stroke="#FDBA74" stroke-width="24" fill="none"/>
+                            <circle cx="160" cy="155" r="10" fill="#FCA5A5"/>
+                            <rect x="154" y="163" width="14" height="16" fill="#EC4899"/>
+                            <circle cx="190" cy="150" r="10" fill="#FED7AA"/>
+                            <rect x="184" y="158" width="14" height="16" fill="#3B82F6"/>
+                        </svg>
+                    </div>
+                </div>
+                <div class="pixel-box bg-white p-2 text-center">
+                    <div class="font-pixel text-[10px] text-pink-800 mb-1">GAMBAR B: AKTIVITI DI RUMAH</div>
+                    <div class="w-full h-44 bg-amber-100 border-2 border-pixelDark rounded flex items-center justify-center p-1">
+                        <svg viewBox="0 0 400 220" class="w-full h-full object-contain">
+                            <rect width="400" height="160" fill="#FEF3C7"/>
+                            <rect y="150" width="400" height="70" fill="#D97706"/>
+                            <rect x="100" y="100" width="200" height="70" fill="#DC2626" rx="10"/>
+                            <circle cx="140" cy="115" r="14" fill="#FED7AA"/>
+                            <ellipse cx="190" cy="125" rx="35" ry="18" fill="#9CA3AF"/>
+                            <rect x="175" y="105" width="14" height="22" fill="#1E293B"/>
+                            <rect x="220" y="145" width="110" height="35" fill="#78350F"/>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Side-By-Side Comparison Grid (When COMPARE BOTH is clicked) -->
+            <div id="compareBothContainer" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 hidden">
+                <div class="pixel-box bg-white p-2 text-center">
+                    <div class="font-pixel text-[10px] text-blue-800 mb-1">GAMBAR A: TAMAN REKREASI</div>
+                    <img src="Gemini_Generated_Image_4sobd64sobd64sob.jpg" alt="GAMBAR A" class="w-full h-44 object-cover border-2 border-pixelDark rounded" />
+                </div>
+                <div class="pixel-box bg-white p-2 text-center">
+                    <div class="font-pixel text-[10px] text-pink-800 mb-1">GAMBAR B: AKTIVITI DI RUMAH</div>
+                    <img src="Gemini_Generated_Image_19bncx19bncx19bn.jpg" alt="GAMBAR B" class="w-full h-44 object-cover border-2 border-pixelDark rounded" />
+                </div>
+            </div>
+
+            <!-- Guided Investigation Tabs (Explicit vs Implicit Guidance) -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Explicit Info Box (Maklumat Tersurat) -->
+                <div class="pixel-box bg-blue-50/90 p-3">
+                    <h3 class="font-pixel text-xs text-blue-900 mb-2 flex items-center gap-1">
+                        👁️ APA YANG KAMU LIHAT? (MAKLUMAT TERSURAT)
+                    </h3>
+                    <div class="space-y-2 font-retro text-lg text-gray-800">
+                        <div class="p-2 bg-white border-l-4 border-blue-500 shadow-sm">
+                            <strong>GAMBAR A (Taman):</strong>
+                            <ul class="list-disc list-inside">
+                                <li>Masyarakat melakukan aktiviti di taman rekreasi.</li>
+                                <li>Individu berjoging dan bersenam.</li>
+                                <li>Kanak-kanak bermain di taman permainan.</li>
+                                <li>Aktiviti fizikal dilakukan bersama-sama.</li>
+                            </ul>
+                        </div>
+                        <div class="p-2 bg-white border-l-4 border-blue-500 shadow-sm">
+                            <strong>GAMBAR B (Rumah):</strong>
+                            <ul class="list-disc list-inside">
+                                <li>Lelaki sedang berbaring di sofa.</li>
+                                <li>Lelaki tersebut sedang menggunakan telefon.</li>
+                                <li>Terdapat makanan ringan dan minuman di meja.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Implicit Info Box (Maklumat Tersirat) -->
+                <div class="pixel-box bg-amber-50/90 p-3">
+                    <h3 class="font-pixel text-xs text-amber-900 mb-2 flex items-center gap-1">
+                        💡 APA YANG BOLEH KAMU FIKIRKAN? (MAKLUMAT TERSIRAT)
+                    </h3>
+                    <div class="space-y-2 font-retro text-lg text-gray-800">
+                        <div class="p-2 bg-white border-l-4 border-amber-500 shadow-sm">
+                            <strong>GAMBAR A (Inferens):</strong>
+                            <ul class="list-disc list-inside">
+                                <li>Masyarakat <em>mungkin</em> ingin mengekalkan kesihatan melalui aktiviti fizikal.</li>
+                                <li>Aktiviti bersama <em>berkemungkinan</em> mengeratkan hubungan sosial.</li>
+                                <li>Taman rekreasi tempat meluangkan masa secara aktif.</li>
+                            </ul>
+                        </div>
+                        <div class="p-2 bg-white border-l-4 border-amber-500 shadow-sm">
+                            <strong>GAMBAR B (Inferens):</strong>
+                            <ul class="list-disc list-inside">
+                                <li>Lelaki tersebut <em>mungkin</em> sedang berehat atau meluangkan masa lapang.</li>
+                                <li>Situasi menggambarkan aktiviti santai di rumah.</li>
+                                <li>Jika kurang bergerak secara berterusan, seseorang <em>berkemungkinan</em> kurang aktif secara fizikal.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-6">
+                <button onclick="nextLevel(4)" class="pixel-btn pixel-btn-mint text-xs sm:text-sm">
+                    MASUK STUDIO TEMU BUAL RPG ▶
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 5: CABARAN TEMU BUAL (RPG DIALOGUE) -->
+        <!-- ========================================== -->
+        <section id="screen-dialogue" class="pixel-box p-4 sm:p-6 hidden bg-pixelDark text-white">
+            <div class="flex justify-between items-center mb-3">
+                <div class="bg-pastelPink text-pixelDark font-pixel text-xs px-3 py-1">TAHAP 04</div>
+                <span class="font-pixel text-xs text-pastelYellow">STUDIO PERBINCANGAN TELEVISYEN</span>
+            </div>
+
+            <h2 class="font-pixel text-sm sm:text-base text-pastelPink text-center mb-2">RANCANGAN TEMU BUAL: WARTAWAN & DOKTOR JEMPUTAN</h2>
+
+            <!-- Interactive RPG Stage Area -->
+            <div class="w-full bg-slate-900 border-4 border-pastelBlue p-3 rounded mb-4 relative min-h-[190px] flex justify-between items-end">
+                
+                <!-- Left Speaker Display (Reporter) -->
+                <div id="speakerReporterDisplay" class="flex flex-col items-center transition-all duration-300">
+                    <div class="w-16 h-20 sm:w-20 sm:h-24">
+                        <svg viewBox="0 0 100 120" class="w-full h-full">
+                            <rect x="22" y="12" width="56" height="42" fill="#D97706" rx="12"/>
+                            <rect x="30" y="20" width="40" height="40" fill="#FFE0BD" rx="8"/>
+                            <rect x="25" y="10" width="50" height="12" fill="#EF4444" rx="2"/>
+                            <text x="36" y="18" font-family="sans-serif" font-size="7" font-weight="bold" fill="#FFF">PRESS</text>
+                            <ellipse cx="42" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <ellipse cx="58" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <rect x="28" y="58" width="44" height="42" fill="#F59E0B" rx="4"/>
+                            <rect x="14" y="60" width="12" height="22" fill="#6B7280" stroke="#2E2B44" stroke-width="2"/>
+                            <circle cx="20" cy="56" r="7" fill="#EF4444" stroke="#2E2B44" stroke-width="2"/>
+                        </svg>
+                    </div>
+                    <span class="font-pixel text-[8px] bg-amber-500 text-black px-1.5 py-0.5 mt-1">WARTAWAN</span>
+                </div>
+
+                <!-- RPG Center Dialogue Speech Box -->
+                <div class="flex-1 mx-2 sm:mx-4">
+                    <div class="dialogue-box p-3 rounded relative">
+                        <div id="dialogueSpeakerName" class="font-pixel text-[10px] text-pastelYellow mb-1 tracking-wider">
+                            [WARTAWAN]
+                        </div>
+                        <div id="dialogueText" class="font-retro text-lg sm:text-2xl text-white leading-snug">
+                            "Pilih topik perbincangan di bawah untuk membaca skrip panduan atau hantar dialog baru kamu!"
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Speaker Display (Doctor) -->
+                <div id="speakerDoctorDisplay" class="flex flex-col items-center opacity-50 transition-all duration-300">
+                    <div class="w-16 h-20 sm:w-20 sm:h-24">
+                        <svg viewBox="0 0 100 120" class="w-full h-full">
+                            <rect x="25" y="15" width="50" height="40" fill="#4A2E16" rx="10"/>
+                            <rect x="30" y="20" width="40" height="40" fill="#FFE0BD" rx="8"/>
+                            <ellipse cx="42" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <ellipse cx="58" cy="38" rx="4" ry="5" fill="#2E2B44"/>
+                            <rect x="28" y="58" width="44" height="42" fill="#FFFFFF" rx="4"/>
+                            <path d="M36 60 Q34 78 50 80 Q66 78 64 60" stroke="#FF5555" stroke-width="3" fill="none"/>
+                        </svg>
+                    </div>
+                    <span class="font-pixel text-[8px] bg-blue-500 text-white px-1.5 py-0.5 mt-1">DOKTOR</span>
+                </div>
+
+            </div>
+
+            <!-- Dialogue Controls & Script Selector -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                
+                <!-- Guided Discussion Selector -->
+                <div class="pixel-box-dark p-3">
+                    <h3 class="font-pixel text-xs text-pastelMint mb-2">📜 PANDUAN SKRIP TEMU BUAL:</h3>
+                    <div class="space-y-1.5 mb-2">
+                        <button onclick="playDialogueStep(0)" class="w-full text-left font-retro text-base p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded flex justify-between items-center">
+                            <span>1. Tersurat: Aktiviti Gambar A & B</span>
+                            <span class="font-pixel text-[9px] text-pastelBlue">▶ BACAKAN</span>
+                        </button>
+                        <button onclick="playDialogueStep(1)" class="w-full text-left font-retro text-base p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded flex justify-between items-center">
+                            <span>2. Tersirat: Inferens & Sebab</span>
+                            <span class="font-pixel text-[9px] text-pastelBlue">▶ BACAKAN</span>
+                        </button>
+                        <button onclick="playDialogueStep(2)" class="w-full text-left font-retro text-base p-1.5 bg-slate-800 hover:bg-slate-700 border border-slate-600 rounded flex justify-between items-center">
+                            <span>3. Banding Beza Tersurat & Sirat</span>
+                            <span class="font-pixel text-[9px] text-pastelBlue">▶ BACAKAN</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Custom Player Dialogue Input Area -->
+                <div class="pixel-box-dark p-3 flex flex-col justify-between">
+                    <div>
+                        <h3 class="font-pixel text-xs text-pastelPink mb-2">✍️ RUANG UCAPAN BEBAS MURID:</h3>
+                        <div class="mb-2">
+                            <label class="font-retro text-base text-gray-300">Penutur:</label>
+                            <select id="customSpeakerSelect" class="w-full bg-slate-800 border border-slate-600 text-white p-1 font-retro text-base rounded mt-1">
+                                <option value="WARTAWAN">🎤 WARTAWAN</option>
+                                <option value="DOKTOR">🩺 DOKTOR</option>
+                            </select>
+                        </div>
+                        <div>
+                            <textarea id="customDialogueInput" rows="2" class="w-full bg-slate-800 border border-slate-600 text-white p-2 font-retro text-base rounded mt-1 focus:outline-none focus:border-pastelPink" placeholder="Taip pendapat atau soalan baru kamu di sini..."></textarea>
+                        </div>
+                    </div>
+                    <button onclick="sendCustomDialogue()" class="pixel-btn pixel-btn-pink text-[10px] w-full mt-2">
+                        💬 SIARKAN DIALOG KE SKRIN
+                    </button>
+                </div>
+            </div>
+
+            <div class="text-center mt-6">
+                <button onclick="nextLevel(5)" class="pixel-btn pixel-btn-mint text-xs sm:text-sm">
+                    MASUK STUDIO RAKAMAN VIDEO ▶
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 6: VIDEO RECORDING STATION          -->
+        <!-- ========================================== -->
+        <section id="screen-video" class="pixel-box p-4 sm:p-6 hidden bg-white">
+            <div class="flex justify-between items-center mb-2">
+                <div class="bg-pixelDark text-white font-pixel text-xs px-3 py-1">TAHAP 05</div>
+                <span class="font-pixel text-xs text-red-600">STUDIO RAKAMAN "LAMPU, KAMERA, BERAKSI!"</span>
+            </div>
+
+            <h2 class="font-pixel text-base sm:text-xl text-pixelDark text-center mb-2">LAMPU, KAMERA, BERAKSI!</h2>
+            <p class="font-retro text-lg text-gray-700 text-center mb-4">Rakam video lakonan temu bual bersama rakan kamu untuk perbentangan!</p>
+
+            <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                
+                <!-- Video Camera Screen Viewport -->
+                <div class="lg:col-span-8 flex flex-col items-center">
+                    <div class="w-full max-w-lg bg-black border-4 border-pixelDark relative rounded overflow-hidden aspect-video shadow-xl flex items-center justify-center">
+                        
+                        <!-- Live WebCam Video Element -->
+                        <video id="webcamVideo" autoplay playsinline muted class="w-full h-full object-cover hidden"></video>
+
+                        <!-- Video Preview Fallback / Idle Screen -->
+                        <div id="videoPlaceholder" class="flex flex-col items-center justify-center text-center p-4">
+                            <div class="w-14 h-14 bg-red-100 rounded-full flex items-center justify-center text-3xl mb-2 border-2 border-red-500">
+                                📹
+                            </div>
+                            <p class="font-pixel text-xs text-white mb-1">KAMERA BELUM DIAKTIFKAN</p>
+                            <p class="font-retro text-base text-gray-400">Tekan 'AKTIFKAN KAMERA' untuk memulakan rakaman studio.</p>
+                        </div>
+
+                        <!-- Recording Overlay Indicators -->
+                        <div id="recIndicator" class="absolute top-3 left-3 hidden flex items-center gap-2 bg-black/70 px-3 py-1 rounded border border-red-500">
+                            <div class="w-3 h-3 bg-red-600 rounded-full rec-dot"></div>
+                            <span class="font-pixel text-[10px] text-white">REC</span>
+                            <span id="recTimer" class="font-pixel text-[10px] text-pastelYellow ml-2">00:00</span>
+                        </div>
+
+                        <!-- Broadcast Overlay Graphics -->
+                        <div class="absolute bottom-2 left-2 right-2 bg-gradient-to-r from-red-600 to-pink-600 text-white p-2 border-2 border-white flex justify-between items-center">
+                            <span class="font-pixel text-[9px]">MISI DETEKTIF TV • LIVE</span>
+                            <span class="font-retro text-base">DOKTOR VS WARTAWAN</span>
+                        </div>
+                    </div>
+
+                    <!-- Recorded Video Result Preview Player -->
+                    <div id="recordedVideoContainer" class="w-full max-w-lg mt-3 hidden">
+                        <h4 class="font-pixel text-xs text-pixelDark mb-1">HASIL RAKAMAN VIDEO:</h4>
+                        <video id="recordedVideo" controls class="w-full border-4 border-pixelDark bg-black rounded"></video>
+                    </div>
+                </div>
+
+                <!-- Video Control Panel -->
+                <div class="lg:col-span-4 flex flex-col gap-3">
+                    <div class="pixel-box-pink p-3">
+                        <h3 class="font-pixel text-xs text-pixelDark mb-2">🎛️ PANEL KAWALAN STUDIO</h3>
+
+                        <button id="btnCamInit" onclick="initCamera()" class="pixel-btn pixel-btn-blue text-[10px] w-full mb-2">
+                            📹 AKTIFKAN KAMERA & MIC
+                        </button>
+
+                        <button id="btnSitesHelp" onclick="toggleSitesHelpModal(true)" class="pixel-btn pixel-btn-yellow text-[9px] w-full mb-2">
+                            ❓ MASALAH MIC / GOOGLE SITES?
+                        </button>
+
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <button id="btnStartRec" onclick="startRecording()" disabled class="pixel-btn pixel-btn-mint text-[9px] opacity-50 cursor-not-allowed">
+                                🔴 RAKAM
+                            </button>
+                            <button id="btnPauseRec" onclick="togglePauseRecording()" disabled class="pixel-btn pixel-btn-yellow text-[9px] opacity-50 cursor-not-allowed">
+                                ⏸ JEDA
+                            </button>
+                        </div>
+
+                        <div class="grid grid-cols-2 gap-2 mb-2">
+                            <button id="btnStopRec" onclick="stopRecording()" disabled class="pixel-btn pixel-btn-pink text-[9px] opacity-50 cursor-not-allowed">
+                                ⏹ BERHENTI
+                            </button>
+                            <button id="btnRetakeRec" onclick="retakeRecording()" disabled class="pixel-btn pixel-btn-blue text-[9px] opacity-50 cursor-not-allowed">
+                                🔄 AMBIL SEMULA
+                            </button>
+                        </div>
+
+                        <a id="btnDownloadVideo" class="pixel-btn pixel-btn-mint text-[10px] w-full text-center hidden">
+                            💾 SIMPAN / MUAT TURUN VIDEO
+                        </a>
+                    </div>
+
+                    <div class="pixel-box p-3 bg-pastelYellow/40">
+                        <h4 class="font-pixel text-[9px] text-pixelDark mb-1">📋 KANDUNGAN RAKAMAN:</h4>
+                        <ol class="font-retro text-base space-y-1 text-gray-800 list-decimal list-inside">
+                            <li>Wartawan memperkenalkan tajuk.</li>
+                            <li>Wartawan menyoal Gambar A & B.</li>
+                            <li>Doktor bina maklumat tersurat.</li>
+                            <li>Wartawan minta maklumat tersirat.</li>
+                            <li>Doktor beri inferens & alasan.</li>
+                            <li>Banding beza kedua-dua gambar.</li>
+                            <li>Wartawan buat kesimpulan.</li>
+                        </ol>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="text-center mt-6">
+                <button onclick="finishMission()" class="pixel-btn pixel-btn-mint text-xs sm:text-sm">
+                    SELESAIKAN MISI DETEKTIF ▶
+                </button>
+            </div>
+        </section>
+
+        <!-- ========================================== -->
+        <!-- SCREEN 7: SKRIN KEMENANGAN (VICTORY SCREEN)-->
+        <!-- ========================================== -->
+        <section id="screen-victory" class="pixel-box p-6 sm:p-8 hidden text-center bg-gradient-to-b from-pastelYellow via-white to-pastelMint">
+            <div class="inline-block bg-pink-500 text-white border-2 border-pixelDark px-4 py-1 font-pixel text-xs mb-3 animate-pulse">
+                ★ TAHAP FINAL SELESAI ★
+            </div>
+
+            <h1 class="font-pixel text-2xl sm:text-4xl text-pixelDark mb-1 tracking-wider">
+                MISI BERJAYA!
+            </h1>
+            <p class="font-kawaii text-lg sm:text-xl text-green-700 mb-4">
+                "Tahniah! Kamu berjaya menyelesaikan penyiasatan dengan mengenal pasti, mentafsir dan membanding beza maklumat tersurat serta maklumat tersirat daripada dua gambar."
+            </p>
+
+            <!-- Animated Gold Victory Trophy / Star -->
+            <div class="flex justify-center items-center gap-4 my-2">
+                <span class="text-4xl animate-bounce">⭐</span>
+                <div class="w-28 h-28 bg-pastelYellow border-4 border-pixelDark rounded-full flex items-center justify-center text-5xl shadow-xl">
+                    🏆
+                </div>
+                <span class="text-4xl animate-bounce" style="animation-delay: -0.5s;">⭐</span>
+            </div>
+
+            <!-- Achievement Badges Card -->
+            <div class="max-w-md mx-auto pixel-box bg-white p-4 my-4">
+                <h3 class="font-pixel text-xs text-pixelDark mb-3">LENCANA PENCAPAIAN DETEKTIF:</h3>
+                
+                <div class="grid grid-cols-2 gap-2 mb-3">
+                    <div class="p-2 bg-pink-50 border border-pink-300 rounded flex items-center gap-2">
+                        <span class="text-xl">👁️</span>
+                        <div class="text-left">
+                            <div class="font-pixel text-[8px] text-pink-900">PAKAR TERSURAT</div>
+                        </div>
+                    </div>
+                    <div class="p-2 bg-blue-50 border border-blue-300 rounded flex items-center gap-2">
+                        <span class="text-xl">💡</span>
+                        <div class="text-left">
+                            <div class="font-pixel text-[8px] text-blue-900">PAKAR TERSIRAT</div>
+                        </div>
+                    </div>
+                    <div class="p-2 bg-yellow-50 border border-yellow-300 rounded flex items-center gap-2">
+                        <span class="text-xl">🎙️</span>
+                        <div class="text-left">
+                            <div class="font-pixel text-[8px] text-yellow-900">PENEMUDUGA TERBAIK</div>
+                        </div>
+                    </div>
+                    <div class="p-2 bg-green-50 border border-green-300 rounded flex items-center gap-2">
+                        <span class="text-xl">🤝</span>
+                        <div class="text-left">
+                            <div class="font-pixel text-[8px] text-green-900">KERJA KUMPULAN</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t-2 border-dashed border-gray-300 pt-2 flex justify-between items-center">
+                    <span class="font-pixel text-xs text-pixelDark">MARKAH KUMPULAN:</span>
+                    <span id="finalScoreText" class="font-pixel text-base text-green-600">100 / 100</span>
+                </div>
+            </div>
+
+            <button onclick="location.reload()" class="pixel-btn pixel-btn-yellow text-xs px-6 py-3">
+                🔄 MAIN SEMULA PERMAINAN
+            </button>
+        </section>
+
+    </main>
+
+    <!-- GOOGLE SITES & MIC PERMISSION DIAGNOSTIC MODAL -->
+    <div id="sitesHelpModal" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="pixel-box bg-white max-w-lg w-full p-5 relative text-left">
+            <button onclick="toggleSitesHelpModal(false)" class="absolute top-2 right-2 bg-red-500 text-white font-pixel text-xs px-2 py-1 border-2 border-pixelDark hover:bg-red-600">X</button>
+            
+            <div class="flex items-center gap-2 mb-3">
+                <span class="text-2xl">🎤</span>
+                <h3 class="font-pixel text-xs sm:text-sm text-pixelDark">CARA AKTIFKAN MIKROFON DI GOOGLE SITES</h3>
+            </div>
+
+            <div class="font-retro text-lg text-gray-800 space-y-2 mb-4 leading-snug">
+                <p class="p-2 bg-yellow-50 border-l-4 border-yellow-400">
+                    ⚠️ <strong>Apa yang nak diisi pada URL_GAME_ANDA?</strong><br>
+                    Gantikan dengan <strong>link pautan tempat anda publish/host fail HTML ini</strong> (contoh: GitHub Pages, Netlify, atau Vercel).
+                </p>
+                
+                <h4 class="font-pixel text-[10px] text-pink-600 mt-2">1. CONTOH KOD SELIPAN (EMBED CODE) GOOGLE SITES:</h4>
+                <p>Salin kod di bawah ke dalam Google Sites (Pilih <strong>Embed ➔ Embed Code</strong>):</p>
+                <div class="bg-gray-900 text-green-400 p-2 font-mono text-xs rounded overflow-x-auto select-all">
+                    &lt;iframe src="https://nama-anda.github.io/misi-detektif/" width="100%" height="750" allow="camera; microphone" style="border:none;"&gt;&lt;/iframe&gt;
+                </div>
+
+                <h4 class="font-pixel text-[10px] text-pink-600 mt-2">2. CARA UNTUK MURID (PELAYAR CHROME/EDGE):</h4>
+                <ul class="list-disc list-inside space-y-1 text-base">
+                    <li>Klik ikon <strong>Kunci / Tetapan (🔒)</strong> di sebelah kiri URL Google Sites.</li>
+                    <li>Pastikan <strong>Microphone</strong> dan <strong>Camera</strong> ditukar kepada <strong>Allow (Benarkan)</strong>.</li>
+                    <li>Muat semula (Reload) halaman Google Sites anda.</li>
+                </ul>
+            </div>
+
+            <div class="flex justify-between items-center gap-2">
+                <button onclick="simulateCameraForTesting()" class="pixel-btn pixel-btn-pink text-[9px]">
+                    🎬 GUNA MOD SIMULASI RAKAMAN
+                </button>
+                <button onclick="toggleSitesHelpModal(false)" class="pixel-btn pixel-btn-mint text-[9px]">
+                    FAHAM & TUTUP
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- FOOTER INFO -->
+    <footer class="w-full max-w-4xl text-center z-10 my-4">
+        <p class="font-retro text-lg text-pastelLavender">
+            CHIBI PIXEL RPG: MISI DETEKTIF GAYA HIDUP • Pendidikan Kesihatan & Bahasa Melayu
+        </p>
+    </footer>
+
+    <!-- JAVASCRIPT GAME LOGIC & SOUND EFFECTS -->
+    <script>
+        // ==========================================
+        // GAME STATE & VARIABLES
+        // ==========================================
+        let currentLevel = 1;
+        let score = 0;
+        let selectedDoctorPlayer = "";
+        let selectedReporterPlayer = "";
+        let mediaRecorder;
+        let recordedChunks = [];
+        let recTimerInterval;
+        let recSeconds = 0;
+        let isPaused = false;
+
+        // Audio Context Synthesizer for Retro 8-bit Sound Effects
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+
+        function playRetroSound(type) {
+            try {
+                if (audioCtx.state === 'suspended') {
+                    audioCtx.resume();
+                }
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                if (type === 'click') {
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(400, audioCtx.currentTime);
+                    osc.frequency.exponentialRampToValueAtTime(800, audioCtx.currentTime + 0.05);
+                    gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+                    gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.05);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.05);
+                } else if (type === 'spin') {
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(200, audioCtx.currentTime);
+                    osc.frequency.linearRampToValueAtTime(600, audioCtx.currentTime + 0.1);
+                    gain.gain.setValueAtTime(0.05, audioCtx.currentTime);
+                    gain.gain.linearRampToValueAtTime(0.01, audioCtx.currentTime + 0.1);
+                    osc.start();
+                    osc.stop(audioCtx.currentTime + 0.1);
+                } else if (type === 'fanfare') {
+                    const now = audioCtx.currentTime;
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(523.25, now); // C5
+                    osc.frequency.setValueAtTime(659.25, now + 0.1); // E5
+                    osc.frequency.setValueAtTime(783.99, now + 0.2); // G5
+                    osc.frequency.setValueAtTime(1046.50, now + 0.3); // C6
+                    gain.gain.setValueAtTime(0.1, now);
+                    gain.gain.exponentialRampToValueAtTime(0.01, now + 0.6);
+                    osc.start(now);
+                    osc.stop(now + 0.6);
+                }
+            } catch (e) {
+                console.log("Audio contextual trigger");
+            }
+        }
+
+        // ==========================================
+        // LEVEL & PROGRESS MANAGEMENT
+        // ==========================================
+        function updateHUD() {
+            document.getElementById('levelIndicator').innerText = `TAHAP 0${currentLevel}/06`;
+            document.getElementById('scoreDisplay').innerText = `MARKAH: ${score}`;
+            const percentage = (currentLevel / 6) * 100;
+            document.getElementById('progressBar').style.width = `${percentage}%`;
+        }
+
+        function showScreen(screenId) {
+            const screens = ['screen-title', 'screen-wheel', 'screen-roles', 'screen-investigate', 'screen-dialogue', 'screen-video', 'screen-victory'];
+            screens.forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.classList.add('hidden');
+            });
+            const target = document.getElementById(screenId);
+            if (target) target.classList.remove('hidden');
+        }
+
+        function startGame() {
+            playRetroSound('click');
+            currentLevel = 1;
+            score += 10;
+            updateHUD();
+            showScreen('screen-wheel');
+            drawWheel();
+        }
+
+        function nextLevel(levelNum) {
+            playRetroSound('click');
+            currentLevel = levelNum;
+            score += 15;
+            updateHUD();
+
+            if (levelNum === 2) showScreen('screen-roles');
+            else if (levelNum === 3) showScreen('screen-investigate');
+            else if (levelNum === 4) showScreen('screen-dialogue');
+            else if (levelNum === 5) showScreen('screen-video');
+            else if (levelNum === 6) finishMission();
+        }
+
+        // ==========================================
+        // SPIN WHEEL LOGIC
+        // ==========================================
+        const wheelCanvas = document.getElementById('wheelCanvas');
+        const ctx = wheelCanvas ? wheelCanvas.getContext('2d') : null;
+        let isSpinning = false;
+
+        function drawWheel() {
+            if (!ctx) return;
+            const width = wheelCanvas.width;
+            const center = width / 2;
+            const radius = center - 10;
+
+            ctx.clearRect(0, 0, width, width);
+
+            // Sector 1: Doctor (Pink Pastel)
+            ctx.beginPath();
+            ctx.moveTo(center, center);
+            ctx.arc(center, center, radius, 0, Math.PI);
+            ctx.fillStyle = '#FFD1DC';
+            ctx.fill();
+            ctx.lineWidth = 4;
+            ctx.strokeStyle = '#2E2B44';
+            ctx.stroke();
+
+            // Doctor Text
+            ctx.save();
+            ctx.translate(center, center);
+            ctx.rotate(Math.PI / 2);
+            ctx.fillStyle = '#2E2B44';
+            ctx.font = 'bold 14px "Press Start 2P"';
+            ctx.fillText('🩺 DOKTOR', -50, -15);
+            ctx.restore();
+
+            // Sector 2: Reporter (Blue Pastel)
+            ctx.beginPath();
+            ctx.moveTo(center, center);
+            ctx.arc(center, center, radius, Math.PI, Math.PI * 2);
+            ctx.fillStyle = '#AEC6CF';
+            ctx.fill();
+            ctx.stroke();
+
+            // Reporter Text
+            ctx.save();
+            ctx.translate(center, center);
+            ctx.rotate(-Math.PI / 2);
+            ctx.fillStyle = '#2E2B44';
+            ctx.font = 'bold 14px "Press Start 2P"';
+            ctx.fillText('🎤 WARTAWAN', -65, -15);
+            ctx.restore();
+
+            // Center Pin
+            ctx.beginPath();
+            ctx.arc(center, center, 18, 0, Math.PI * 2);
+            ctx.fillStyle = '#FDFD96';
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function spinWheel() {
+            if (isSpinning) return;
+            isSpinning = true;
+            playRetroSound('spin');
+            
+            document.getElementById('spinBtn').disabled = true;
+            document.getElementById('spinBtn').classList.add('opacity-50');
+
+            const isDoctor = Math.random() < 0.5;
+            const baseRotations = 5 * 360;
+            const targetDegree = isDoctor ? (baseRotations + 90) : (baseRotations + 270);
+
+            wheelCanvas.style.transform = `rotate(${targetDegree}deg)`;
+
+            setTimeout(() => {
+                isSpinning = false;
+                playRetroSound('fanfare');
+                
+                if (isDoctor) {
+                    selectedDoctorPlayer = "Pemain 1";
+                    selectedReporterPlayer = "Pemain 2";
+                } else {
+                    selectedDoctorPlayer = "Pemain 2";
+                    selectedReporterPlayer = "Pemain 1";
+                }
+
+                document.getElementById('p1DoctorTag').innerText = `(${selectedDoctorPlayer})`;
+                document.getElementById('p2ReporterTag').innerText = `(${selectedReporterPlayer})`;
+
+                const resultCard = document.getElementById('wheelResult');
+                const resultText = document.getElementById('resultText');
+                resultText.innerHTML = `🎉 <strong>${selectedDoctorPlayer}</strong> = <strong>DOKTOR</strong><br>🎉 <strong>${selectedReporterPlayer}</strong> = <strong>WARTAWAN</strong>`;
+                resultCard.classList.remove('hidden');
+
+            }, 4000);
+        }
+
+        // ==========================================
+        // IMAGE DISPLAY CONTROLS
+        // ==========================================
+        function switchImageView(viewType) {
+            playRetroSound('click');
+            const singleCont = document.getElementById('singleImageContainer');
+            const compareCont = document.getElementById('compareBothContainer');
+            const layoutA = document.getElementById('imageALayout');
+            const layoutB = document.getElementById('imageBLayout');
+
+            if (viewType === 'A') {
+                singleCont.classList.remove('hidden');
+                compareCont.classList.add('hidden');
+                layoutA.classList.remove('hidden');
+                layoutB.classList.add('hidden');
+            } else if (viewType === 'B') {
+                singleCont.classList.remove('hidden');
+                compareCont.classList.add('hidden');
+                layoutA.classList.add('hidden');
+                layoutB.classList.remove('hidden');
+            } else if (viewType === 'BOTH') {
+                singleCont.classList.add('hidden');
+                compareCont.classList.remove('hidden');
+            }
+        }
+
+        // ==========================================
+        // RPG DIALOGUE SYSTEM LOGIC
+        // ==========================================
+        const guidedDialogues = [
+            {
+                speaker: "WARTAWAN",
+                text: "Doktor, apakah aktiviti yang dapat kita lihat dalam Gambar A (Taman Rekreasi) dan Gambar B (Rumah)?",
+                isReporter: true
+            },
+            {
+                speaker: "DOKTOR",
+                text: "Pada Gambar A, masyarakat bersenam dan berjoging. Pada Gambar B pula, seorang lelaki berehat di sofa sambil menggunakan telefon.",
+                isReporter: false
+            },
+            {
+                speaker: "DOKTOR",
+                text: "Secara tersirat, masyarakat Gambar A mungkin mahu menjaga stamina. Manakala lelaki Gambar B mungkin sedang berehat meluangkan masa lapang.",
+                isReporter: false
+            }
+        ];
+
+        function playDialogueStep(index) {
+            playRetroSound('click');
+            const d = guidedDialogues[index];
+            setDialogueDisplay(d.speaker, d.text, d.isReporter);
+        }
+
+        function setDialogueDisplay(speaker, text, isReporter) {
+            const speakerNameEl = document.getElementById('dialogueSpeakerName');
+            const dialogueTextEl = document.getElementById('dialogueText');
+            const reporterDisp = document.getElementById('speakerReporterDisplay');
+            const doctorDisp = document.getElementById('speakerDoctorDisplay');
+
+            speakerNameEl.innerText = `[${speaker}]`;
+            dialogueTextEl.innerText = `"${text}"`;
+
+            if (isReporter) {
+                reporterDisp.classList.remove('opacity-50');
+                reporterDisp.classList.add('scale-110');
+                doctorDisp.classList.add('opacity-50');
+                doctorDisp.classList.remove('scale-110');
+            } else {
+                doctorDisp.classList.remove('opacity-50');
+                doctorDisp.classList.add('scale-110');
+                reporterDisp.classList.add('opacity-50');
+                reporterDisp.classList.remove('scale-110');
+            }
+        }
+
+        function sendCustomDialogue() {
+            const speaker = document.getElementById('customSpeakerSelect').value;
+            const text = document.getElementById('customDialogueInput').value.trim();
+            if (!text) return;
+
+            playRetroSound('click');
+            setDialogueDisplay(speaker, text, speaker === "WARTAWAN");
+            document.getElementById('customDialogueInput').value = "";
+        }
+
+        // ==========================================
+        // WEBCAM & MEDIA RECORDER API
+        // ==========================================
+        function toggleSitesHelpModal(show) {
+            playRetroSound('click');
+            const modal = document.getElementById('sitesHelpModal');
+            if (show) modal.classList.remove('hidden');
+            else modal.classList.add('hidden');
+        }
+
+        async function initCamera() {
+            playRetroSound('click');
+            try {
+                // Ensure audio/video constraints support iframe inheritance
+                const constraints = { 
+                    video: { width: { ideal: 640 }, height: { ideal: 360 } }, 
+                    audio: true 
+                };
+                
+                const stream = await navigator.mediaDevices.getUserMedia(constraints);
+                const videoEl = document.getElementById('webcamVideo');
+                videoEl.srcObject = stream;
+                videoEl.classList.remove('hidden');
+                document.getElementById('videoPlaceholder').classList.add('hidden');
+
+                document.getElementById('btnStartRec').disabled = false;
+                document.getElementById('btnStartRec').classList.remove('opacity-50', 'cursor-not-allowed');
+                document.getElementById('btnCamInit').classList.add('hidden');
+
+                mediaRecorder = new MediaRecorder(stream);
+                mediaRecorder.ondataavailable = (e) => {
+                    if (e.data.size > 0) {
+                        recordedChunks.push(e.data);
+                    }
+                };
+                mediaRecorder.onstop = saveRecording;
+
+            } catch (err) {
+                console.error("Camera/Mic Error:", err);
+                toggleSitesHelpModal(true);
+            }
+        }
+
+        // Fallback simulation mode if Google Sites or browser hardware disables mic
+        function simulateCameraForTesting() {
+            toggleSitesHelpModal(false);
+            const placeholder = document.getElementById('videoPlaceholder');
+            placeholder.innerHTML = `
+                <div class="text-center p-4">
+                    <div class="text-4xl mb-2 animate-bounce">🎬</div>
+                    <p class="font-pixel text-xs text-pastelYellow">MOD SIMULASI STUDIO AKTIF</p>
+                    <p class="font-retro text-lg text-gray-300">Kamera/Mic dalam mod latihan. Murid boleh meneruskan rakaman perbentangan lisan!</p>
+                </div>
+            `;
+            document.getElementById('btnStartRec').disabled = false;
+            document.getElementById('btnStartRec').classList.remove('opacity-50', 'cursor-not-allowed');
+            document.getElementById('btnCamInit').classList.add('hidden');
+        }
+
+        function startRecording() {
+            if (!mediaRecorder) return;
+            playRetroSound('click');
+            recordedChunks = [];
+            mediaRecorder.start();
+            isPaused = false;
+
+            document.getElementById('recIndicator').classList.remove('hidden');
+            document.getElementById('btnStartRec').disabled = true;
+            document.getElementById('btnStartRec').classList.add('opacity-50');
+            
+            document.getElementById('btnPauseRec').disabled = false;
+            document.getElementById('btnPauseRec').classList.remove('opacity-50', 'cursor-not-allowed');
+            document.getElementById('btnStopRec').disabled = false;
+            document.getElementById('btnStopRec').classList.remove('opacity-50', 'cursor-not-allowed');
+
+            recSeconds = 0;
+            recTimerInterval = setInterval(() => {
+                if (!isPaused) {
+                    recSeconds++;
+                    const mins = String(Math.floor(recSeconds / 60)).padStart(2, '0');
+                    const secs = String(recSeconds % 60).padStart(2, '0');
+                    document.getElementById('recTimer').innerText = `${mins}:${secs}`;
+                }
+            }, 1000);
+        }
+
+        function togglePauseRecording() {
+            if (!mediaRecorder) return;
+            playRetroSound('click');
+            if (mediaRecorder.state === "recording") {
+                mediaRecorder.pause();
+                isPaused = true;
+                document.getElementById('btnPauseRec').innerText = "▶ SAMBUNG";
+            } else if (mediaRecorder.state === "paused") {
+                mediaRecorder.resume();
+                isPaused = false;
+                document.getElementById('btnPauseRec').innerText = "⏸ JEDA";
+            }
+        }
+
+        function stopRecording() {
+            if (!mediaRecorder || mediaRecorder.state === "inactive") return;
+            playRetroSound('click');
+            mediaRecorder.stop();
+            clearInterval(recTimerInterval);
+
+            document.getElementById('recIndicator').classList.add('hidden');
+            document.getElementById('btnStopRec').disabled = true;
+            document.getElementById('btnStopRec').classList.add('opacity-50');
+            document.getElementById('btnPauseRec').disabled = true;
+            document.getElementById('btnPauseRec').classList.add('opacity-50');
+
+            document.getElementById('btnRetakeRec').disabled = false;
+            document.getElementById('btnRetakeRec').classList.remove('opacity-50', 'cursor-not-allowed');
+        }
+
+        function retakeRecording() {
+            playRetroSound('click');
+            document.getElementById('recordedVideoContainer').classList.add('hidden');
+            document.getElementById('btnDownloadVideo').classList.add('hidden');
+            startRecording();
+        }
+
+        function saveRecording() {
+            const blob = new Blob(recordedChunks, { type: 'video/webm' });
+            const url = URL.createObjectURL(blob);
+            
+            const recordedVideo = document.getElementById('recordedVideo');
+            recordedVideo.src = url;
+            document.getElementById('recordedVideoContainer').classList.remove('hidden');
+
+            const dlBtn = document.getElementById('btnDownloadVideo');
+            dlBtn.href = url;
+            dlBtn.download = `Misi_Detektif_Gaya_Hidup_${Date.now()}.webm`;
+            dlBtn.classList.remove('hidden');
+        }
+
+        // ==========================================
+        // VICTORY / MISSION FINISH
+        // ==========================================
+        function finishMission() {
+            playRetroSound('fanfare');
+            currentLevel = 6;
+            score = 100;
+            updateHUD();
+            showScreen('screen-victory');
+        }
+
+        window.onload = () => {
+            updateHUD();
+        };
+    </script>
+</body>
+</html>
